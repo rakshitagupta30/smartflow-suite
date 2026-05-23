@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+
+        Login | CMS Dashboard
+
+    </title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://unpkg.com/aos@2.3.4/dist/aos.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+
+            --bg-color: #0f172a;
+            --card-color: rgba(255,255,255,0.08);
+            --border-color: rgba(255,255,255,0.08);
+            --text-color: white;
+
+        }
+
+        body.light {
+
+            --bg-color: #f4f7fb;
+            --card-color: rgba(255,255,255,0.85);
+            --border-color: rgba(0,0,0,0.06);
+            --text-color: #111827;
+
+        }
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+
+                radial-gradient(
+                    circle at top left,
+                    rgba(99,102,241,0.25),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(14,165,233,0.25),
+                    transparent 30%
+                ),
+
+                var(--bg-color);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-family: 'Poppins', sans-serif;
+
+            overflow: hidden;
+
+            transition: 0.4s ease;
+
+        }
+
+        .background-blur {
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                rgba(99,102,241,0.35),
+                rgba(14,165,233,0.35)
+            );
+
+            filter: blur(120px);
+
+            animation: floating 8s infinite ease-in-out;
+
+        }
+
+        .background-blur:nth-child(1) {
+
+            top: -100px;
+
+            left: -100px;
+
+        }
+
+        .background-blur:nth-child(2) {
+
+            bottom: -100px;
+
+            right: -100px;
+
+            animation-delay: 2s;
+
+        }
+
+        @keyframes floating {
+
+            0% {
+
+                transform: translateY(0px);
+
+            }
+
+            50% {
+
+                transform: translateY(-30px);
+
+            }
+
+            100% {
+
+                transform: translateY(0px);
+
+            }
+
+        }
+
+        .login-card {
+
+            width: 430px;
+
+            padding: 40px;
+
+            border-radius: 32px;
+
+            background: var(--card-color);
+
+            backdrop-filter: blur(20px);
+
+            border: 1px solid var(--border-color);
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+            position: relative;
+
+            z-index: 10;
+
+            color: var(--text-color);
+
+        }
+
+        .logo-circle {
+
+            width: 90px;
+
+            height: 90px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #6366f1,
+                #8b5cf6
+            );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin: auto;
+
+            margin-bottom: 20px;
+
+            font-size: 35px;
+
+            color: white;
+
+            animation: glow 2s infinite alternate;
+
+        }
+
+        @keyframes glow {
+
+            from {
+
+                box-shadow: 0 0 10px rgba(99,102,241,0.3);
+
+            }
+
+            to {
+
+                box-shadow: 0 0 35px rgba(99,102,241,0.7);
+
+            }
+
+        }
+
+        .title {
+
+            text-align: center;
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            margin-bottom: 10px;
+
+        }
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #cbd5e1;
+
+            margin-bottom: 35px;
+
+            font-size: 14px;
+
+        }
+
+        body.light .subtitle {
+
+            color: #6b7280;
+
+        }
+
+        .input-group-custom {
+
+            position: relative;
+
+            margin-bottom: 25px;
+
+        }
+
+        .input-group-custom i {
+
+            position: absolute;
+
+            top: 18px;
+
+            left: 18px;
+
+            color: #94a3b8;
+
+        }
+
+        .form-control {
+
+            height: 55px;
+
+            border-radius: 16px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            background: rgba(255,255,255,0.08);
+
+            color: var(--text-color);
+
+            padding-left: 50px;
+
+            font-size: 15px;
+
+        }
+
+        .form-control:focus {
+
+            background: rgba(255,255,255,0.12);
+
+            border-color: #6366f1;
+
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+
+            color: var(--text-color);
+
+        }
+
+        .form-control::placeholder {
+
+            color: #94a3b8;
+
+        }
+
+        .login-btn {
+
+            width: 100%;
+
+            height: 55px;
+
+            border: none;
+
+            border-radius: 16px;
+
+            background: linear-gradient(
+                135deg,
+                #6366f1,
+                #8b5cf6
+            );
+
+            color: white;
+
+            font-weight: 600;
+
+            font-size: 16px;
+
+            transition: 0.3s ease;
+
+        }
+
+        .login-btn:hover {
+
+            transform: scale(1.03);
+
+            box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+
+        }
+
+        .theme-toggle {
+
+            position: absolute;
+
+            top: 25px;
+
+            right: 25px;
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            cursor: pointer;
+
+            background: rgba(255,255,255,0.1);
+
+            color: white;
+
+            backdrop-filter: blur(10px);
+
+            transition: 0.3s ease;
+
+            font-size: 18px;
+
+            z-index: 20;
+
+        }
+
+        .theme-toggle:hover {
+
+            transform: rotate(180deg) scale(1.08);
+
+            background: rgba(255,255,255,0.18);
+
+        }
+
+        .error-box {
+
+            background: rgba(239,68,68,0.12);
+
+            border: 1px solid rgba(239,68,68,0.2);
+
+            color: #fecaca;
+
+            padding: 12px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+
+    <div class="background-blur"></div>
+
+    <div class="background-blur"></div>
+
+
+    <!-- THEME BUTTON -->
+
+    <button
+        class="theme-toggle"
+        onclick="toggleTheme()"
+    >
+
+        🌙
+
+    </button>
+
+
+    <!-- LOGIN CARD -->
+
+    <div
+        class="login-card"
+        data-aos="zoom-in"
+    >
+
+        <div class="logo-circle">
+
+            <i class="fa-solid fa-file-contract"></i>
+
+        </div>
+
+        <div class="title">
+
+            Welcome Back
+
+        </div>
+
+        <div class="subtitle">
+
+            Login to your enterprise dashboard
+
+        </div>
+
+
+        {% if error %}
+
+        <div class="error-box">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <form
+            method="POST"
+            action="/login"
+        >
+
+            <div class="input-group-custom">
+
+                <i class="fa-solid fa-user"></i>
+
+                <input
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    placeholder="Enter Username"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group-custom">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter Password"
+                    required
+                >
+
+            </div>
+
+            <button class="login-btn">
+
+                Login To Dashboard
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- AOS -->
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+
+        AOS.init({
+
+            duration: 1200,
+
+            once: true
+
+        });
+
+
+        function toggleTheme() {
+
+            document.body.classList.toggle('light');
+
+        }
+
+    </script>
+
+</body>
+
+</html>

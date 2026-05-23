@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+
+        Contract Details
+
+    </title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+
+            background-color: #f5f5f5;
+
+        }
+
+        .details-card {
+
+            border-radius: 15px;
+
+        }
+
+        .summary-card {
+
+            border-radius: 15px;
+
+            background-color: #ffffff;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container">
+
+            <div>
+
+                <a class="navbar-brand d-block">
+
+                    Contract Details
+
+                </a>
+
+                <span class="badge bg-info text-dark">
+
+                    {{ role }}
+
+                </span>
+
+            </div>
+
+            <a
+                href="/"
+                class="btn btn-light btn-sm"
+            >
+
+                Back To Dashboard
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- CONTRACT DETAILS -->
+
+    <div class="container mt-5">
+
+        <div class="card shadow p-5 details-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h2>
+
+                    {{ contract[1] }}
+
+                </h2>
+
+                {% if contract[6] == 'Approved' %}
+
+                    <span class="badge bg-success fs-6">
+
+                        Approved
+
+                    </span>
+
+                {% elif contract[6] == 'Pending' %}
+
+                    <span class="badge bg-warning text-dark fs-6">
+
+                        Pending
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-danger fs-6">
+
+                        Rejected
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <p>
+
+                        <strong>
+
+                            Client Name:
+
+                        </strong>
+
+                        {{ contract[2] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+
+                            Contract Amount:
+
+                        </strong>
+
+                        ₹ {{ contract[3] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+
+                            Start Date:
+
+                        </strong>
+
+                        {{ contract[4] }}
+
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p>
+
+                        <strong>
+
+                            End Date:
+
+                        </strong>
+
+                        {{ contract[5] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+
+                            Contract Status:
+
+                        </strong>
+
+                        {{ contract[6] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+
+                            Contract PDF:
+
+                        </strong>
+
+                        <a
+                            href="/static/uploads/{{ contract[7] }}"
+                            target="_blank"
+                            class="btn btn-secondary btn-sm"
+                        >
+
+                            View PDF
+
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI SUMMARY -->
+
+        <div class="card shadow p-4 mt-4 summary-card">
+
+            <h3 class="mb-3">
+
+                AI Contract Summary
+
+            </h3>
+
+            <p class="fs-5">
+
+                {{ summary }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
