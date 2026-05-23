@@ -9,7 +9,6 @@ from datetime import datetime
 
 from email.mime.text import MIMEText
 
-
 app = Flask(__name__)
 
 app.secret_key = "contract_secret_key"
@@ -17,29 +16,22 @@ app.secret_key = "contract_secret_key"
 
 # FILE UPLOAD CONFIG
 
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = "static/uploads"
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(
-
-    app.config['UPLOAD_FOLDER'],
-
-    exist_ok=True
-
-)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 
 # DATABASE INITIALIZATION
 
+
 def initialize_database():
 
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     cursor = connection.cursor()
 
-    cursor.execute(
-
-        '''
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS contracts (
 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,9 +45,7 @@ def initialize_database():
             contract_file TEXT
 
         )
-        '''
-
-    )
+        """)
 
     connection.commit()
 
@@ -66,6 +56,7 @@ initialize_database()
 
 
 # EMAIL FUNCTION
+
 
 def send_email_notification(contract_title):
 
@@ -88,135 +79,83 @@ def send_email_notification(contract_title):
 
     message = MIMEText(body)
 
-    message['Subject'] = subject
+    message["Subject"] = subject
 
-    message['From'] = sender_email
+    message["From"] = sender_email
 
-    message['To'] = receiver_email
+    message["To"] = receiver_email
 
-    server = smtplib.SMTP(
-
-        'smtp.gmail.com',
-
-        587
-
-    )
+    server = smtplib.SMTP("smtp.gmail.com", 587)
 
     server.starttls()
 
-    server.login(
+    server.login(sender_email, sender_password)
 
-        sender_email,
-
-        sender_password
-
-    )
-
-    server.sendmail(
-
-        sender_email,
-
-        receiver_email,
-
-        message.as_string()
-
-    )
+    server.sendmail(sender_email, receiver_email, message.as_string())
 
     server.quit()
 
 
 # LOGIN PAGE
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        username = request.form['username']
+        username = request.form["username"]
 
-        password = request.form['password']
+        password = request.form["password"]
 
         users = {
-
-            "admin": {
-
-                "password": "admin123",
-
-                "role": "Contract Manager"
-
-            },
-
-            "sales": {
-
-                "password": "sales123",
-
-                "role": "Sales Representative"
-
-            },
-
-            "finance": {
-
-                "password": "finance123",
-
-                "role": "Finance Team"
-
-            },
-
-            "legal": {
-
-                "password": "legal123",
-
-                "role": "Legal Team"
-
-            }
-
+            "admin": {"password": "admin123", "role": "Contract Manager"},
+            "sales": {"password": "sales123", "role": "Sales Representative"},
+            "finance": {"password": "finance123", "role": "Finance Team"},
+            "legal": {"password": "legal123", "role": "Legal Team"},
         }
 
         if username in users and password == users[username]["password"]:
 
-            session['user'] = username
+            session["user"] = username
 
-            session['role'] = users[username]["role"]
+            session["role"] = users[username]["role"]
 
-            return redirect('/')
+            return redirect("/")
 
         else:
 
-            return render_template(
+            return render_template("login.html", error="Invalid Username or Password")
 
-                'login.html',
-
-                error="Invalid Username or Password"
-
-            )
-
-    return render_template('login.html')
+    return render_template("login.html")
 
 
 # LOGOUT
 
-@app.route('/logout')
+
+@app.route("/logout")
 def logout():
 
-    session.pop('user', None)
+    session.pop("user", None)
 
-    session.pop('role', None)
+    session.pop("role", None)
 
-    return redirect('/login')
+    return redirect("/login")
 
 
 # HOME PAGE
 
-@app.route('/')
+
+@app.route("/")
 def home():
 
-    if 'user' not in session:
+    if "user" not in session:
 
-        return redirect('/login')
+        return redirect("/login")
 
-    search_query = request.args.get('search')
+    search_query = request.args.get("search")
 
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     cursor = connection.cursor()
 
@@ -225,7 +164,6 @@ def home():
     if search_query:
 
         cursor.execute(
-
             """
             SELECT * FROM contracts
 
@@ -233,37 +171,22 @@ def home():
             contract_title LIKE ?
             OR client_name LIKE ?
             """,
-
-            (
-
-                '%' + search_query + '%',
-                '%' + search_query + '%'
-
-            )
-
+            ("%" + search_query + "%", "%" + search_query + "%"),
         )
 
     else:
 
-        cursor.execute(
-
-            "SELECT * FROM contracts"
-
-        )
+        cursor.execute("SELECT * FROM contracts")
 
     contracts = cursor.fetchall()
 
     # RECENT CONTRACTS
 
-    cursor.execute(
-
-        """
+    cursor.execute("""
         SELECT * FROM contracts
         ORDER BY id DESC
         LIMIT 5
-        """
-
-    )
+        """)
 
     recent_contracts = cursor.fetchall()
 
@@ -277,82 +200,56 @@ def home():
 
     for contract in contracts:
 
-        end_date = datetime.strptime(
+        end_date = datetime.strptime(contract[5], "%Y-%m-%d").date()
 
-            contract[5],
-
-            '%Y-%m-%d'
-
-        ).date()
-
-        days_left = (
-
-            end_date - today_date
-
-        ).days
+        days_left = (end_date - today_date).days
 
         if days_left <= 3 and days_left >= 0:
 
             expiring_contracts += 1
 
-        all_contracts.append({
-
-            'id': contract[0],
-            'title': contract[1],
-            'client': contract[2],
-            'amount': contract[3],
-            'start': contract[4],
-            'end': contract[5],
-            'status': contract[6],
-            'file': contract[7],
-            'days_left': days_left
-
-        })
+        all_contracts.append(
+            {
+                "id": contract[0],
+                "title": contract[1],
+                "client": contract[2],
+                "amount": contract[3],
+                "start": contract[4],
+                "end": contract[5],
+                "status": contract[6],
+                "file": contract[7],
+                "days_left": days_left,
+            }
+        )
 
     # DASHBOARD COUNTS
 
-    cursor.execute(
-
-        "SELECT COUNT(*) FROM contracts"
-
-    )
+    cursor.execute("SELECT COUNT(*) FROM contracts")
 
     total_contracts = cursor.fetchone()[0]
 
-    cursor.execute(
-
-        """
+    cursor.execute("""
         SELECT COUNT(*)
         FROM contracts
         WHERE contract_status='Approved'
-        """
-
-    )
+        """)
 
     approved_contracts = cursor.fetchone()[0]
 
-    cursor.execute(
-
-        """
+    cursor.execute("""
         SELECT COUNT(*)
         FROM contracts
         WHERE contract_status='Pending'
-        """
-
-    )
+        """)
 
     pending_contracts = cursor.fetchone()[0]
 
     # TOTAL REVENUE
 
-    cursor.execute(
-
-        """
+    cursor.execute("""
         SELECT SUM(contract_amount)
         FROM contracts
-        """
-
-    )
+        """)
 
     total_revenue = cursor.fetchone()[0]
 
@@ -366,77 +263,56 @@ def home():
 
     for item in all_contracts:
 
-        if item['days_left'] > 0:
+        if item["days_left"] > 0:
 
             active_contracts += 1
 
     connection.close()
 
     return render_template(
-
-        'index.html',
-
+        "index.html",
         contracts=all_contracts,
-
         total=total_contracts,
-
         approved=approved_contracts,
-
         pending=pending_contracts,
-
-        role=session.get('role'),
-
+        role=session.get("role"),
         recent=recent_contracts,
-
         alerts=expiring_contracts,
-
         revenue=total_revenue,
-
-        active=active_contracts
-
+        active=active_contracts,
     )
 
 
 # ADD CONTRACT
 
-@app.route('/add_contract', methods=['POST'])
+
+@app.route("/add_contract", methods=["POST"])
 def add_contract():
 
-    title = request.form['title']
+    title = request.form["title"]
 
-    client = request.form['client']
+    client = request.form["client"]
 
-    amount = request.form['amount']
+    amount = request.form["amount"]
 
-    start = request.form['start']
+    start = request.form["start"]
 
-    end = request.form['end']
+    end = request.form["end"]
 
-    status = request.form['status']
+    status = request.form["status"]
 
-    uploaded_file = request.files['contract_file']
+    uploaded_file = request.files["contract_file"]
 
     filename = uploaded_file.filename
 
-    uploaded_file.save(
+    uploaded_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
-        os.path.join(
-
-            app.config['UPLOAD_FOLDER'],
-
-            filename
-
-        )
-
-    )
-
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     cursor = connection.cursor()
 
     cursor.execute(
-
-        '''
+        """
         INSERT INTO contracts (
 
             contract_title,
@@ -450,20 +326,8 @@ def add_contract():
         )
 
         VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''',
-
-        (
-
-            title,
-            client,
-            amount,
-            start,
-            end,
-            status,
-            filename
-
-        )
-
+        """,
+        (title, client, amount, start, end, status, filename),
     )
 
     connection.commit()
@@ -476,53 +340,43 @@ def add_contract():
 
     # send_email_notification(title)
 
-    return redirect('/')
+    return redirect("/")
 
 
 # DELETE CONTRACT
 
-@app.route('/delete_contract/<int:id>')
+
+@app.route("/delete_contract/<int:id>")
 def delete_contract(id):
 
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     cursor = connection.cursor()
 
-    cursor.execute(
-
-        "DELETE FROM contracts WHERE id = ?",
-
-        (id,)
-
-    )
+    cursor.execute("DELETE FROM contracts WHERE id = ?", (id,))
 
     connection.commit()
 
     connection.close()
 
-    return redirect('/')
+    return redirect("/")
 
 
 # CONTRACT DETAILS PAGE
 
-@app.route('/contract/<int:id>')
+
+@app.route("/contract/<int:id>")
 def contract_details(id):
 
-    if 'user' not in session:
+    if "user" not in session:
 
-        return redirect('/login')
+        return redirect("/login")
 
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     cursor = connection.cursor()
 
-    cursor.execute(
-
-        "SELECT * FROM contracts WHERE id = ?",
-
-        (id,)
-
-    )
+    cursor.execute("SELECT * FROM contracts WHERE id = ?", (id,))
 
     contract = cursor.fetchone()
 
@@ -547,24 +401,20 @@ def contract_details(id):
     """
 
     return render_template(
-
-        'contract_details.html',
-
+        "contract_details.html",
         contract=contract,
-
-        role=session.get('role'),
-
-        summary=summary
-
+        role=session.get("role"),
+        summary=summary,
     )
 
 
 # DOWNLOAD REPORT
 
-@app.route('/download_report')
+
+@app.route("/download_report")
 def download_report():
 
-    connection = sqlite3.connect('contracts.db')
+    connection = sqlite3.connect("contracts.db")
 
     query = """
 
@@ -581,41 +431,19 @@ def download_report():
 
     """
 
-    dataframe = pd.read_sql_query(
+    dataframe = pd.read_sql_query(query, connection)
 
-        query,
+    report_file = "contract_report.xlsx"
 
-        connection
-
-    )
-
-    report_file = 'contract_report.xlsx'
-
-    dataframe.to_excel(
-
-        report_file,
-
-        index=False
-
-    )
+    dataframe.to_excel(report_file, index=False)
 
     connection.close()
 
-    return send_file(
-
-        report_file,
-
-        as_attachment=True
-
-    )
+    return send_file(report_file, as_attachment=True)
 
 
 # RUN APP
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    app.run(
-
-        debug=True
-
-    )
+    app.run(debug=True)
