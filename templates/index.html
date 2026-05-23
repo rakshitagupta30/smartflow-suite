@@ -1,1148 +1,622 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-
-        SmartFlow Suite
-
-    </title>
+    <title>SmartFlow Suite</title>
 
     <!-- BOOTSTRAP -->
 
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- FONT AWESOME -->
 
     <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    >
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <!-- GOOGLE FONT -->
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- AOS -->
 
-    <link
-        href="https://unpkg.com/aos@2.3.4/dist/aos.css"
-        rel="stylesheet"
-    >
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
     <!-- CHART JS -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+      :root {
+        --bg-color: #0f172a;
+        --card-color: rgba(255, 255, 255, 0.08);
+        --text-color: #ffffff;
+        --border-color: rgba(255, 255, 255, 0.08);
+      }
 
-        :root {
+      body.light {
+        --bg-color: #f4f7fb;
+        --card-color: rgba(255, 255, 255, 0.82);
+        --text-color: #111827;
+        --border-color: rgba(0, 0, 0, 0.06);
+      }
 
-            --bg-color: #0f172a;
-            --card-color: rgba(255,255,255,0.08);
-            --text-color: #ffffff;
-            --border-color: rgba(255,255,255,0.08);
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        }
+      body {
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(99, 102, 241, 0.15),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(14, 165, 233, 0.15),
+            transparent 30%
+          ),
+          var(--bg-color);
 
-        body.light {
+        min-height: 100vh;
 
-            --bg-color: #f4f7fb;
-            --card-color: rgba(255,255,255,0.82);
-            --text-color: #111827;
-            --border-color: rgba(0,0,0,0.06);
+        font-family: "Poppins", sans-serif;
 
-        }
+        color: var(--text-color);
 
-        * {
+        transition: 0.4s ease;
 
-            margin: 0;
+        overflow-x: hidden;
+      }
 
-            padding: 0;
+      .navbar-custom {
+        background: var(--card-color);
 
-            box-sizing: border-box;
+        backdrop-filter: blur(18px);
 
-        }
+        border: 1px solid var(--border-color);
 
-        body {
+        border-radius: 22px;
 
-            background:
+        padding: 18px 25px;
 
-                radial-gradient(
-                    circle at top left,
-                    rgba(99,102,241,0.15),
-                    transparent 30%
-                ),
+        margin-top: 20px;
 
-                radial-gradient(
-                    circle at bottom right,
-                    rgba(14,165,233,0.15),
-                    transparent 30%
-                ),
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
 
-                var(--bg-color);
+      .brand-title {
+        font-size: 28px;
+        font-weight: 700;
+      }
 
-            min-height: 100vh;
+      .role-badge {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
 
-            font-family: 'Poppins', sans-serif;
+        color: white;
 
-            color: var(--text-color);
+        padding: 8px 16px;
 
-            transition: 0.4s ease;
+        border-radius: 50px;
 
-            overflow-x: hidden;
+        font-size: 12px;
+      }
 
-        }
+      .glass-card {
+        background: var(--card-color);
 
-        .navbar-custom {
+        backdrop-filter: blur(18px);
 
-            background: var(--card-color);
+        border: 1px solid var(--border-color);
 
-            backdrop-filter: blur(18px);
+        border-radius: 28px;
 
-            border: 1px solid var(--border-color);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
 
-            border-radius: 22px;
+        transition: 0.4s ease;
+      }
 
-            padding: 18px 25px;
+      .glass-card:hover {
+        transform: translateY(-6px);
+      }
 
-            margin-top: 20px;
+      .dashboard-card {
+        padding: 28px;
 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        overflow: hidden;
 
-        }
+        position: relative;
+      }
 
-        .brand-title {
+      .dashboard-card::before {
+        content: "";
 
-            font-size: 28px;
+        position: absolute;
 
-            font-weight: 700;
+        width: 180px;
+        height: 180px;
 
-        }
+        border-radius: 50%;
 
-        .role-badge {
+        background: rgba(255, 255, 255, 0.08);
 
-            background: linear-gradient(
-                135deg,
-                #6366f1,
-                #8b5cf6
-            );
+        top: -70px;
+        right: -70px;
+      }
 
-            color: white;
+      .dashboard-card i {
+        font-size: 42px;
 
-            padding: 8px 16px;
+        margin-bottom: 18px;
+      }
 
-            border-radius: 50px;
+      .dashboard-card h2 {
+        font-size: 36px;
 
-            font-size: 12px;
+        font-weight: 700;
+      }
 
-        }
+      .gradient-1 {
+        background: linear-gradient(135deg, #7c3aed, #6366f1);
 
-        .glass-card {
+        color: white;
+      }
 
-            background: var(--card-color);
+      .gradient-2 {
+        background: linear-gradient(135deg, #06b6d4, #2563eb);
 
-            backdrop-filter: blur(18px);
+        color: white;
+      }
 
-            border: 1px solid var(--border-color);
+      .gradient-3 {
+        background: linear-gradient(135deg, #10b981, #14b8a6);
 
-            border-radius: 28px;
+        color: white;
+      }
 
-            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+      .gradient-4 {
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
 
-            transition: 0.4s ease;
+        color: white;
+      }
 
-        }
+      .btn-modern {
+        border: none;
 
-        .glass-card:hover {
+        border-radius: 16px;
 
-            transform: translateY(-6px);
+        padding: 12px 18px;
 
-        }
+        font-weight: 600;
 
-        .dashboard-card {
+        transition: 0.3s ease;
+      }
 
-            padding: 28px;
+      .btn-modern:hover {
+        transform: scale(1.05);
+      }
 
-            overflow: hidden;
+      .theme-btn {
+        background: rgba(255, 255, 255, 0.08);
 
-            position: relative;
+        color: white;
+      }
 
-        }
+      body.light .theme-btn {
+        color: black;
+      }
 
-        .dashboard-card::before {
+      .logout-btn {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
 
-            content: '';
+        color: white;
+      }
 
-            position: absolute;
+      .form-control {
+        background: rgba(255, 255, 255, 0.08);
 
-            width: 180px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
 
-            height: 180px;
+        border-radius: 16px;
 
-            border-radius: 50%;
+        padding: 14px;
 
-            background: rgba(255,255,255,0.08);
+        color: var(--text-color);
+      }
 
-            top: -70px;
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.12);
 
-            right: -70px;
+        border-color: #6366f1;
 
-        }
+        box-shadow: none;
 
-        .dashboard-card i {
+        color: var(--text-color);
+      }
 
-            font-size: 42px;
+      .table {
+        color: var(--text-color);
+      }
 
-            margin-bottom: 18px;
+      .table thead {
+        background: rgba(99, 102, 241, 0.12);
+      }
 
-        }
+      .table tbody tr:hover {
+        background: rgba(99, 102, 241, 0.08);
+      }
 
-        .dashboard-card h2 {
+      .badge {
+        padding: 9px 14px;
 
-            font-size: 36px;
+        border-radius: 50px;
 
-            font-weight: 700;
+        font-size: 12px;
+      }
 
-        }
+      .activity-item {
+        background: rgba(255, 255, 255, 0.05);
 
-        .gradient-1 {
+        border-radius: 18px;
 
-            background: linear-gradient(
-                135deg,
-                #7c3aed,
-                #6366f1
-            );
+        padding: 16px;
 
-            color: white;
+        margin-bottom: 14px;
 
-        }
+        transition: 0.3s ease;
+      }
 
-        .gradient-2 {
+      .activity-item:hover {
+        transform: translateX(8px);
 
-            background: linear-gradient(
-                135deg,
-                #06b6d4,
-                #2563eb
-            );
-
-            color: white;
-
-        }
-
-        .gradient-3 {
-
-            background: linear-gradient(
-                135deg,
-                #10b981,
-                #14b8a6
-            );
-
-            color: white;
-
-        }
-
-        .gradient-4 {
-
-            background: linear-gradient(
-                135deg,
-                #f59e0b,
-                #ef4444
-            );
-
-            color: white;
-
-        }
-
-        .btn-modern {
-
-            border: none;
-
-            border-radius: 16px;
-
-            padding: 12px 18px;
-
-            font-weight: 600;
-
-            transition: 0.3s ease;
-
-        }
-
-        .btn-modern:hover {
-
-            transform: scale(1.05);
-
-        }
-
-        .theme-btn {
-
-            background: rgba(255,255,255,0.08);
-
-            color: white;
-
-        }
-
-        body.light .theme-btn {
-
-            color: black;
-
-        }
-
-        .logout-btn {
-
-            background: linear-gradient(
-                135deg,
-                #ef4444,
-                #dc2626
-            );
-
-            color: white;
-
-        }
-
-        .form-control {
-
-            background: rgba(255,255,255,0.08);
-
-            border: 1px solid rgba(255,255,255,0.08);
-
-            border-radius: 16px;
-
-            padding: 14px;
-
-            color: var(--text-color);
-
-        }
-
-        .form-control:focus {
-
-            background: rgba(255,255,255,0.12);
-
-            border-color: #6366f1;
-
-            box-shadow: none;
-
-            color: var(--text-color);
-
-        }
-
-        .form-control::placeholder {
-
-            color: #94a3b8;
-
-        }
-
-        .table {
-
-            color: var(--text-color);
-
-        }
-
-        .table thead {
-
-            background: rgba(99,102,241,0.12);
-
-        }
-
-        .table tbody tr:hover {
-
-            background: rgba(99,102,241,0.08);
-
-        }
-
-        .badge {
-
-            padding: 9px 14px;
-
-            border-radius: 50px;
-
-            font-size: 12px;
-
-        }
-
-        .activity-item {
-
-            background: rgba(255,255,255,0.05);
-
-            border-radius: 18px;
-
-            padding: 16px;
-
-            margin-bottom: 14px;
-
-            transition: 0.3s ease;
-
-        }
-
-        .activity-item:hover {
-
-            transform: translateX(8px);
-
-            background: rgba(99,102,241,0.08);
-
-        }
-
-        .floating {
-
-            animation: floating 4s ease-in-out infinite;
-
-        }
-
-        @keyframes floating {
-
-            0% {
-
-                transform: translateY(0px);
-
-            }
-
-            50% {
-
-                transform: translateY(-8px);
-
-            }
-
-            100% {
-
-                transform: translateY(0px);
-
-            }
-
-        }
-
-        .glow {
-
-            animation: glow 2s infinite alternate;
-
-        }
-
-        @keyframes glow {
-
-            from {
-
-                box-shadow: 0 0 10px rgba(99,102,241,0.2);
-
-            }
-
-            to {
-
-                box-shadow: 0 0 30px rgba(99,102,241,0.4);
-
-            }
-
-        }
-
+        background: rgba(99, 102, 241, 0.08);
+      }
     </style>
+  </head>
 
-</head>
-
-<body class="dark">
-
+  <body class="dark">
     <div class="container py-4">
+      <!-- NAVBAR -->
 
-        <!-- NAVBAR -->
+      <div
+        class="navbar-custom d-flex justify-content-between align-items-center"
+        data-aos="fade-down"
+      >
+        <div>
+          <div class="brand-title">SmartFlow Suite ✨</div>
 
-        <div
-            class="navbar-custom d-flex justify-content-between align-items-center"
-            data-aos="fade-down"
-        >
-
-            <div>
-
-                <div class="brand-title">
-
-                    SmartFlow Suite ✨
-
-                </div>
-
-                <span class="role-badge">
-
-                    {{ role }}
-
-                </span>
-
-            </div>
-
-            <div class="d-flex gap-3">
-
-                <button
-                    onclick="toggleTheme()"
-                    class="btn btn-modern theme-btn"
-                >
-
-                    🌙
-
-                </button>
-
-                <a
-                    href="/logout"
-                    class="btn btn-modern logout-btn"
-                >
-
-                    Logout
-
-                </a>
-
-            </div>
-
+          <span class="role-badge"> {{ role }} </span>
         </div>
 
+        <div class="d-flex gap-3">
+          <button onclick="toggleTheme()" class="btn btn-modern theme-btn">
+            🌙
+          </button>
 
-        <!-- ALERT -->
+          <a href="/logout" class="btn btn-modern logout-btn"> Logout </a>
+        </div>
+      </div>
 
-        {% if alerts > 0 %}
+      <!-- ALERT -->
 
-        <div
-            class="alert alert-danger border-0 rounded-4 mt-4 glow"
-            data-aos="zoom-in"
-        >
+      {% if alerts > 0 %}
 
-            ⚠️
+      <div class="alert alert-danger border-0 rounded-4 mt-4">
+        ⚠️
 
-            <strong>
+        <strong> {{ alerts }} </strong>
 
-                {{ alerts }}
+        contract(s) expiring soon.
+      </div>
 
-            </strong>
+      {% endif %}
 
-            contract(s) expiring soon.
+      <!-- KPI CARDS -->
 
+      <div class="row g-4 mt-1">
+        <div class="col-md-3">
+          <div class="glass-card dashboard-card gradient-1">
+            <i class="fa-solid fa-file-contract"></i>
+
+            <h6>Total Contracts</h6>
+
+            <h2>{{ total }}</h2>
+          </div>
         </div>
 
-        {% endif %}
+        <div class="col-md-3">
+          <div class="glass-card dashboard-card gradient-2">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
 
+            <h6>Revenue</h6>
 
-        <!-- KPI CARDS -->
-
-        <div class="row g-4 mt-1">
-
-            <div
-                class="col-md-3"
-                data-aos="fade-up"
-            >
-
-                <div class="glass-card dashboard-card gradient-1 floating">
-
-                    <i class="fa-solid fa-file-contract"></i>
-
-                    <h6>
-
-                        Total Contracts
-
-                    </h6>
-
-                    <h2>
-
-                        {{ total }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div
-                class="col-md-3"
-                data-aos="fade-up"
-                data-aos-delay="100"
-            >
-
-                <div class="glass-card dashboard-card gradient-2 floating">
-
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-
-                    <h6>
-
-                        Revenue
-
-                    </h6>
-
-                    <h2>
-
-                        ₹ {{ revenue }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div
-                class="col-md-3"
-                data-aos="fade-up"
-                data-aos-delay="200"
-            >
-
-                <div class="glass-card dashboard-card gradient-3 floating">
-
-                    <i class="fa-solid fa-chart-line"></i>
-
-                    <h6>
-
-                        Active Contracts
-
-                    </h6>
-
-                    <h2>
-
-                        {{ active }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div
-                class="col-md-3"
-                data-aos="fade-up"
-                data-aos-delay="300"
-            >
-
-                <div class="glass-card dashboard-card gradient-4 floating">
-
-                    <i class="fa-solid fa-clock"></i>
-
-                    <h6>
-
-                        Expiring Soon
-
-                    </h6>
-
-                    <h2>
-
-                        {{ alerts }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
+            <h2>₹ {{ revenue }}</h2>
+          </div>
         </div>
 
+        <div class="col-md-3">
+          <div class="glass-card dashboard-card gradient-3">
+            <i class="fa-solid fa-chart-line"></i>
 
-        <!-- MAIN CONTENT -->
+            <h6>Active Contracts</h6>
 
-        <div class="row mt-5 g-4">
-
-            <!-- FORM -->
-
-            <div
-                class="col-md-4"
-                data-aos="fade-right"
-            >
-
-                <div class="glass-card p-4">
-
-                    <h3 class="mb-4">
-
-                        Add Agreement
-
-                    </h3>
-
-                    <form
-                        action="/add_contract"
-                        method="POST"
-                        enctype="multipart/form-data"
-                    >
-
-                        <input
-                            type="text"
-                            name="title"
-                            class="form-control mb-3"
-                            placeholder="Agreement Title"
-                            required
-                        >
-
-                        <input
-                            type="text"
-                            name="client"
-                            class="form-control mb-3"
-                            placeholder="Client Name"
-                            required
-                        >
-
-                        <input
-                            type="number"
-                            name="amount"
-                            class="form-control mb-3"
-                            placeholder="Contract Amount"
-                            required
-                        >
-
-                        <input
-                            type="date"
-                            name="start"
-                            class="form-control mb-3"
-                            required
-                        >
-
-                        <input
-                            type="date"
-                            name="end"
-                            class="form-control mb-3"
-                            required
-                        >
-
-                        <select
-                            name="status"
-                            class="form-control mb-3"
-                        >
-
-                            <option value="Pending">
-
-                                Pending
-
-                            </option>
-
-                            <option value="Approved">
-
-                                Approved
-
-                            </option>
-
-                            <option value="Rejected">
-
-                                Rejected
-
-                            </option>
-
-                        </select>
-
-                        <input
-                            type="file"
-                            name="contract_file"
-                            class="form-control mb-4"
-                            required
-                        >
-
-                        <button class="btn btn-modern gradient-1 w-100">
-
-                            Save Agreement
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-
-            <!-- TABLE -->
-
-            <div
-                class="col-md-8"
-                data-aos="fade-left"
-            >
-
-                <div class="glass-card p-4">
-
-                    <div class="d-flex justify-content-between mb-4">
-
-                        <h3>
-
-                            Agreement Records
-
-                        </h3>
-
-                        <div class="d-flex gap-2">
-
-                            <form
-                                method="GET"
-                                action="/"
-                            >
-
-                                <input
-                                    type="text"
-                                    name="search"
-                                    class="form-control"
-                                    placeholder="Search"
-                                >
-
-                            </form>
-
-                            {% comment %} <a
-                                href="/download_report"
-                                class="btn btn-modern gradient-2"
-                            >
-
-                                Export
-
-                            </a> {% endcomment %}
-
-                        </div>
-
-                    </div>
-
-                    <div class="table-responsive">
-
-                        <table class="table align-middle">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Client</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                {% for contract in contracts %}
-
-                                <tr>
-
-                                    <td>
-
-                                        {{ contract.id }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ contract.title }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ contract.client }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {% if contract.status|lower == 'approved' %}
-
-                                        <span class="badge bg-success">
-
-                                            Approved
-
-                                        </span>
-
-                                        {% elif contract.status|lower == 'pending' %}
-
-                                        <span class="badge bg-warning text-dark">
-
-                                            Pending
-
-                                        </span>
-
-                                        {% else %}
-
-                                        <span class="badge bg-danger">
-
-                                            Rejected
-
-                                        </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                    <td>
-
-                                        <div class="d-flex gap-2">
-
-                                            <a
-                                                href="/contract/{{ contract.id }}"
-                                                class="btn btn-info btn-sm"
-                                            >
-
-                                                View
-
-                                            </a>
-
-                                            <a
-                                                href="/delete_contract/{{ contract.id }}"
-                                                class="btn btn-danger btn-sm"
-                                            >
-
-                                                Delete
-
-                                            </a>
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-
-                                {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            <h2>{{ active }}</h2>
+          </div>
         </div>
 
+        <div class="col-md-3">
+          <div class="glass-card dashboard-card gradient-4">
+            <i class="fa-solid fa-clock"></i>
 
-        <!-- CHARTS -->
+            <h6>Expiring Soon</h6>
 
-        <div class="row mt-5 g-4">
+            <h2>{{ alerts }}</h2>
+          </div>
+        </div>
+      </div>
 
-            <div
-                class="col-md-6"
-                data-aos="zoom-in"
+      <!-- MAIN CONTENT -->
+
+      <div class="row mt-5 g-4">
+        <!-- FORM -->
+
+        <div class="col-md-4">
+          <div class="glass-card p-4">
+            <h3 class="mb-4">Add Agreement</h3>
+
+            <form
+              action="/add_contract"
+              method="POST"
+              enctype="multipart/form-data"
             >
+              <input
+                type="text"
+                name="title"
+                class="form-control mb-3"
+                placeholder="Agreement Title"
+                required
+              />
 
-                <div class="glass-card p-4">
+              <input
+                type="text"
+                name="client"
+                class="form-control mb-3"
+                placeholder="Client Name"
+                required
+              />
 
-                    <h4 class="mb-4">
+              <input
+                type="number"
+                name="amount"
+                class="form-control mb-3"
+                placeholder="Contract Amount"
+                required
+              />
 
-                        Contract Analytics
+              <input
+                type="date"
+                name="start"
+                class="form-control mb-3"
+                required
+              />
 
-                    </h4>
+              <input
+                type="date"
+                name="end"
+                class="form-control mb-3"
+                required
+              />
 
-                    <canvas id="contractChart"></canvas>
+              <select name="status" class="form-control mb-3">
+                <option value="Pending">Pending</option>
 
-                </div>
+                <option value="Approved">Approved</option>
 
-            </div>
+                <option value="Rejected">Rejected</option>
+              </select>
 
-            <div
-                class="col-md-6"
-                data-aos="zoom-in"
-            >
+              <input
+                type="file"
+                name="contract_file"
+                class="form-control mb-4"
+                required
+              />
 
-                <div class="glass-card p-4">
-
-                    <h4 class="mb-4">
-
-                        Revenue Analytics
-
-                    </h4>
-
-                    <canvas id="revenueChart"></canvas>
-
-                </div>
-
-            </div>
-
+              <button class="btn btn-modern gradient-1 w-100">
+                Save Agreement
+              </button>
+            </form>
+          </div>
         </div>
 
+        <!-- TABLE -->
 
-        <!-- RECENT ACTIVITY -->
-
-        <div
-            class="glass-card p-4 mt-5 mb-5"
-            data-aos="fade-up"
-        >
-
+        <div class="col-md-8">
+          <div class="glass-card p-4">
             <div class="d-flex justify-content-between mb-4">
+              <h3>Agreement Records</h3>
 
-                <h3>
-
-                    Recent Activity
-
-                </h3>
-
-                <span class="badge bg-primary">
-
-                    Live Updates
-
-                </span>
-
+              <form method="GET" action="/">
+                <input
+                  type="text"
+                  name="search"
+                  class="form-control"
+                  placeholder="Search"
+                />
+              </form>
             </div>
 
-            {% for item in recent %}
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
 
-            <div class="activity-item">
+                <tbody>
+                  {% for contract in contracts %}
 
-                <div class="d-flex justify-content-between">
+                  <tr>
+                    <td>{{ contract.id }}</td>
 
-                    <div>
+                    <td>{{ contract.title }}</td>
 
-                        <strong>
+                    <td>{{ contract.client }}</td>
 
-                            {{ item[1] }}
+                    <td>
+                      {% if contract.status|lower == 'approved' %}
 
-                        </strong>
+                      <span class="badge bg-success"> Approved </span>
 
-                        added for
+                      {% elif contract.status|lower == 'pending' %}
 
-                        <strong>
+                      <span class="badge bg-warning text-dark"> Pending </span>
 
-                            {{ item[2] }}
+                      {% else %}
 
-                        </strong>
+                      <span class="badge bg-danger"> Rejected </span>
 
-                    </div>
+                      {% endif %}
+                    </td>
 
-                    <span class="badge bg-info">
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a
+                          href="/contract/{{ contract.id }}"
+                          class="btn btn-info btn-sm"
+                        >
+                          View
+                        </a>
 
-                        {{ item[6] }}
+                        <a
+                          href="/delete_contract/{{ contract.id }}"
+                          class="btn btn-danger btn-sm"
+                        >
+                          Delete
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
 
-                    </span>
-
-                </div>
-
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {% endfor %}
+      <!-- RECENT ACTIVITY -->
 
+      <div class="glass-card p-4 mt-5 mb-5">
+        <div class="d-flex justify-content-between mb-4">
+          <h3>Recent Activity</h3>
+
+          <span class="badge bg-primary"> Live Updates </span>
         </div>
 
+        {% for item in recent %}
+
+        <div class="activity-item">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong> {{ item.contract_title }} </strong>
+
+              added for
+
+              <strong> {{ item.client_name }} </strong>
+            </div>
+
+            <span class="badge bg-info"> {{ item.contract_status }} </span>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
     </div>
 
-
-    <!-- CHART JS -->
+    <!-- CHARTS -->
 
     <script>
 
-        new Chart(
+      new Chart(
 
-            document.getElementById('contractChart'),
+          document.getElementById('contractChart'),
 
-            {
+          {
 
-                type: 'doughnut',
+              type: 'doughnut',
 
-                data: {
+              data: {
 
-                    labels: [
+                  labels: [
 
-                        'Approved',
-                        'Pending',
-                        'Rejected'
+                      'Approved',
+                      'Pending',
+                      'Rejected'
 
-                    ],
+                  ],
 
-                    datasets: [{
+                  datasets: [{
 
-                        data: [
+                      data: [
 
-                            {{ approved }},
-                            {{ pending }},
-                            {{ total - approved - pending }}
+                          {{ approved }},
+                          {{ pending }},
+                          {{ total - approved - pending }}
 
-                        ],
+                      ],
 
-                        backgroundColor: [
+                      backgroundColor: [
 
-                            '#8b5cf6',
-                            '#06b6d4',
-                            '#ef4444'
+                          '#8b5cf6',
+                          '#06b6d4',
+                          '#ef4444'
 
-                        ],
+                      ]
 
-                        borderWidth: 0
+                  }]
 
-                    }]
+              }
 
-                }
+          }
 
-            }
-
-        );
+      );
 
 
+      function toggleTheme() {
 
-        new Chart(
+          document.body.classList.toggle('light');
 
-            document.getElementById('revenueChart'),
-
-            {
-
-                type: 'bar',
-
-                data: {
-
-                    labels: [
-
-                        'Approved',
-                        'Pending',
-                        'Rejected'
-
-                    ],
-
-                    datasets: [{
-
-                        label: 'Revenue',
-
-                        data: [
-
-                            {{ approved * 50000 }},
-                            {{ pending * 30000 }},
-                            {{ (total - approved - pending) * 10000 }}
-
-                        ],
-
-                        backgroundColor: [
-
-                            '#8b5cf6',
-                            '#06b6d4',
-                            '#ef4444'
-
-                        ],
-
-                        borderRadius: 12
-
-                    }]
-
-                }
-
-            }
-
-        );
-
-
-
-        // THEME TOGGLE
-
-        function toggleTheme() {
-
-            document.body.classList.toggle('light');
-
-        }
-
+      }
     </script>
-
 
     <!-- AOS -->
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
     <script>
-
-        AOS.init({
-
-            duration: 1200,
-
-            once: true
-
-        });
-
+      AOS.init({
+        duration: 1000,
+      });
     </script>
-
-</body>
-
+  </body>
 </html>
