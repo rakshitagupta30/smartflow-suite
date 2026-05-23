@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, send_file
 
 import sqlite3
 import os
-import pandas as pd
+
 import smtplib
 
 from datetime import datetime
