@@ -408,38 +408,38 @@ def contract_details(id):
     )
 
 
-# DOWNLOAD REPORT
+# # DOWNLOAD REPORT
 
 
-@app.route("/download_report")
-def download_report():
+# @app.route("/download_report")
+# def download_report():
 
-    connection = sqlite3.connect("contracts.db")
+#     connection = sqlite3.connect("contracts.db")
 
-    query = """
+#     query = """
 
-    SELECT
+#     SELECT
 
-        contract_title,
-        client_name,
-        contract_amount,
-        start_date,
-        end_date,
-        contract_status
+#         contract_title,
+#         client_name,
+#         contract_amount,
+#         start_date,
+#         end_date,
+#         contract_status
 
-    FROM contracts
+#     FROM contracts
 
-    """
+#     """
 
-    dataframe = pd.read_sql_query(query, connection)
+#     dataframe = pd.read_sql_query(query, connection)
 
-    report_file = "contract_report.xlsx"
+#     report_file = "contract_report.xlsx"
 
-    dataframe.to_excel(report_file, index=False)
+#     dataframe.to_excel(report_file, index=False)
 
-    connection.close()
+#     connection.close()
 
-    return send_file(report_file, as_attachment=True)
+#     return send_file(report_file, as_attachment=True)
 
 
 # RUN APP
