@@ -109,18 +109,18 @@ https://your-live-demo-link.onrender.com
 # 📸 Screenshots
 
 ## Login Page
-(Add Screenshot Here)
+<img width="917" height="825" alt="Screenshot 2026-05-23 142816" src="https://github.com/user-attachments/assets/86bd6d51-fe9f-492e-b93c-c139efbf3fed" />
 
 ## Dashboard
-(Add Screenshot Here)
+<img width="1883" height="859" alt="Screenshot 2026-05-23 142846" src="https://github.com/user-attachments/assets/8ccbce92-a6a5-4ae4-8027-2e537869d507" />
+
 
 ## Analytics Section
-(Add Screenshot Here)
+<img width="1658" height="808" alt="Screenshot 2026-05-23 143609" src="https://github.com/user-attachments/assets/e1394fd0-3e19-4ec9-bb5b-d8e91525fa16" />
+
 
 ## Dark Mode
-(Add Screenshot Here)
-
----
+<img width="944" height="787" alt="Screenshot 2026-05-23 143634" src="https://github.com/user-attachments/assets/9f7e80c3-2594-4cd3-9a21-cbf32d55c7e5" />
 
 # 🔮 Future Improvements
 
