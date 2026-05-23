@@ -27,7 +27,7 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 def initialize_database():
 
-    connection = sqlite3.connect("contracts.db")
+    connection = sqlite3.connect('instance/contracts.db')
 
     cursor = connection.cursor()
 
@@ -155,7 +155,7 @@ def home():
 
     search_query = request.args.get("search")
 
-    connection = sqlite3.connect("contracts.db")
+    connection = sqlite3.connect('instance/contracts.db')
 
     cursor = connection.cursor()
 
@@ -307,7 +307,7 @@ def add_contract():
 
     uploaded_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
-    connection = sqlite3.connect("contracts.db")
+    connection = sqlite3.connect('instance/contracts.db')
 
     cursor = connection.cursor()
 
@@ -349,7 +349,7 @@ def add_contract():
 @app.route("/delete_contract/<int:id>")
 def delete_contract(id):
 
-    connection = sqlite3.connect("contracts.db")
+    connection = sqlite3.connect('instance/contracts.db')
 
     cursor = connection.cursor()
 
@@ -372,7 +372,7 @@ def contract_details(id):
 
         return redirect("/login")
 
-    connection = sqlite3.connect("contracts.db")
+    connection = sqlite3.connect('instance/contracts.db')
 
     cursor = connection.cursor()
 
@@ -414,7 +414,7 @@ def contract_details(id):
 # @app.route("/download_report")
 # def download_report():
 
-#     connection = sqlite3.connect("contracts.db")
+#     connection = sqlite3.connect('instance/contracts.db')
 
 #     query = """
 
